@@ -1,0 +1,69 @@
+﻿@using MVCBlog.Models;
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@model List<Post>
+
+<!--
+<section>
+    <aside class="aside">
+        {
+            var sidebarPosts = ViewBag.SidebarPosts as List<Post>;
+            if (sidebarPosts != null)
+            {
+                foreach (var sidebarPost in sidebarPosts)
+                {
+                    <a href="Posts/Details/sidebarPost.ID">sidebarPost.Title</a>
+                    <br/>
+                }
+            }
+        }
+    </aside>
+</section>
+    -->
+
+<aside id="sidebar" class="column-left">
+
+    <nav id="mainnav">
+        <ul>
+            @{
+                var sidebarPosts = ViewBag.SideBarPosts as List<Post>;
+                if (sidebarPosts != null)
+                {
+                    foreach (var sidebarPost in sidebarPosts)
+                    {
+                        <li><a href="Posts/Details/@sidebarPost.ID">@sidebarPost.Title</a></li>
+                    }
+                }
+            }
+        </ul>
+    </nav>
+
+
+</aside>
+
+
+<section class="row">
+    
+
+        @foreach (var post in Model)
+        {
+            <article class="post col-md-6 col-md-offset-3">
+                <h2 class="title">@post.Title</h2>
+
+                <div class="about">
+                    <small>Posted on <i>@post.Date</i></small>
+                    @if (post.Author != null)
+                {
+                        @:by <i>@post.Author.FullName (@post.Author.UserName)</i>
+                }
+                </div>
+                <div>
+                    post.Body
+                </div>
+            </article>
+
+        }
+</section>
+

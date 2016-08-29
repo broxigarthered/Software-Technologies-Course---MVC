@@ -1,0 +1,165 @@
+﻿body {
+    height: 100%;
+    position: relative;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding: 10px;
+}
+
+.post>h2, .post>div {
+    background: #EEE;
+    padding: 5px;
+    margin: 0;
+}
+
+.post>h2 {
+    margin-top: 15px;
+}
+
+.post {
+    background: rgb(238, 238, 238) none repeat scroll 0% 0%;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+
+#sidebar {
+    position:absolute;
+    top:0; bottom:0; left:0;
+    width:50px;
+    background:#000;
+}
+
+.aside {
+    width: 30%;
+    text-align: center;
+    padding: 4px;
+    margin: 1px;
+    float: left
+}
+
+.aside a {
+     font-size: 20px;
+     margin: 2px;
+     padding: 2px;
+     text-decoration: none;
+     color: black;
+     display: block;
+}
+
+.alert {
+    margin-top: 10px;
+}
+
+/*SIDEBAR*/
+
+.column-left {
+	float:left;
+}
+.column-right {
+	float:right;
+}
+aside#sidebar {
+	width:200px;
+	position: fixed;
+    padding-top: 55px;
+    clear: both;
+}
+nav#mainnav ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+nav#mainnav li {
+	padding:0;
+	border-bottom: 1px solid #333;
+}
+nav#mainnav li.selected-item  {
+	border-bottom:none;
+}
+nav#mainnav li.selected-item a,
+nav#mainnav li.selected-item a:hover {
+	color:#fff;
+	font-weight:bold;
+	background: #D20000;
+}
+nav#mainnav li a:hover {
+	background:#292929;
+	color: #eee;
+	text-decoration:none;
+}
+nav#mainnav li a {
+	color: #ccc;
+	display: block;
+	padding: 22px 17px;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	text-decoration: none;
+	letter-spacing: 0.5px;
+}
+
+aside#sidebar h4 { 
+	color:#0C367E;
+	font-size:16px;
+	text-transform:uppercase;
+	font-weight:bold;
+	margin:0;
+	padding:7px 10px;
+}
+
+
+article {
+    padding: 10px 10px 30px;
+	font-size: 0.95em;
+border-bottom: 1px solid #eee;
+    display: block;
+ }
+
+article h2 {
+    padding-bottom: 0;
+   font-size: 2.5em;
+}
+
+article .article-info {
+  color: #CCC;
+font-size: 0.8em;
+padding: 0px 0px 10px;
+text-transform: uppercase;
+}
+
+article .article-info a { 
+	color: #ccc;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+.footer p{
+    margin: 20px 0;
+}
