@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using MVCBlog.Extensions;
 using MVCBlog.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace MVCBlog.Controllers
@@ -22,6 +23,10 @@ namespace MVCBlog.Controllers
         // GET: Posts
         public ActionResult Index()
         {
+            //string message = TempData["message"] as string;
+            //ViewBag.message = message;
+
+            //todo set the message for deleting etc
             return View(db.Posts.Include(p => p.Author).ToList());
         }
 
@@ -39,6 +44,27 @@ namespace MVCBlog.Controllers
             }
             return View(post);
         }
+
+        //// POST: Posts/Comment/5
+        //public ActionResult PostComment(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Post post = db.Posts.Find(id);
+        //    if (post == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    // TODO: Get comment from area
+        //    // Form.get("textarea")
+        //    // Comment currentComment = new Comment (postId, commentStr)
+        //    // Post.
+        //    return View("Post.html");
+
+        //}
 
         // GET: Posts/Create
         public ActionResult Create()
@@ -73,23 +99,40 @@ namespace MVCBlog.Controllers
         }
 
         // GET: Posts/Edit/5
-        [Authorize(Roles = "Administrators")]
+        //[Authorize(Roles = "Administrators")]
         public ActionResult Edit(int? id)
         {
+            var userStore = new UserStore<ApplicationUser>(db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+            var roleStore = new RoleStore<IdentityRole>(db);
+            ApplicationUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            
             Post post = db.Posts.Find(id);
             if (post == null)
             {
                 return HttpNotFound();
             }
 
+            // if the author of the post is the one currently logged or the admin is logged - post editing is enabled
+            if (user.Id == post.Author_Id || userManager.IsInRole(user.Id, "Administrators"))
+            {
+                var authors = db.Users.ToList();
+                ViewBag.Authors = authors;
 
-            var authors = db.Users.ToList();
-            ViewBag.Authors = authors;
-            return View(post);
+                return View(post);
+            }
+
+            // if not, we create temp data message which then will be printed on the post index
+           // TempData["message"] = "You're not allowed to edit this post";
+            this.AddNotification("You cannot edit that post.", NotificationType.INFO);
+        
+            return RedirectToAction("Index");
         }
 
         // POST: Posts/Edit/5
@@ -97,18 +140,33 @@ namespace MVCBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrators")]
+        // [Authorize(Roles = "Administrators")]
         public ActionResult Edit([Bind(Include = "ID,Title,Body,Date,Author_ID")] Post post)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(post).State = EntityState.Modified;
-                this.AddNotification("Post Edited successfully.", NotificationType.INFO);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            ApplicationDbContext userscontext = new ApplicationDbContext();
+            var userStore = new UserStore<ApplicationUser>(userscontext);
+            var userManager = new UserManager<ApplicationUser>(userStore);
 
-            return View(post);
+            var roleStore = new RoleStore<IdentityRole>(userscontext);
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            ApplicationUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+
+            if (user.Id == post.Author_Id || userManager.IsInRole(user.Id, "Administrators"))
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(post).State = EntityState.Modified;
+                    this.AddNotification("Post Edited successfully.", NotificationType.INFO);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                var authors = db.Users.ToList();
+                ViewBag.Authors = authors;
+                return View(post);
+
+            }
+            return Redirect("Index");
         }
 
         // GET: Posts/Delete/5

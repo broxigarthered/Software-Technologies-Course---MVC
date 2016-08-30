@@ -1,8 +1,15 @@
-﻿@model IEnumerable<MVCBlog.Models.Post>
+﻿@using MVCBlog.Extensions
+@model IEnumerable<MVCBlog.Models.Post>
 
 @{
     ViewBag.Title = "Index";
 }
+
+@*if the edit was unsuccessfull*@
+@*@if (ViewBag.message != null)
+{
+    <h3>@ViewBag.message</h3>
+}*@
 
 <h2>Index</h2>
 

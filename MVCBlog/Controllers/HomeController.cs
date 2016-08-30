@@ -10,20 +10,30 @@ namespace MVCBlog.Controllers
 {
     public class HomeController : Controller
     {
+
         ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 0)
         {
-            var posts = db.Posts.Include(p => p.Author)
+            const int PagePostsCount = 3; 
+
+            var count = this.db.Posts.Count();
+
+            var posts = this.db.Posts.Include(p => p.Author)
                 .OrderByDescending(p => p.Date)
-                .Take(3);
+                .Skip(page * PagePostsCount)
+                .Take(PagePostsCount).ToList();
+
+            this.ViewBag.MaxPage = (count / PagePostsCount) - (count % PagePostsCount == 0 ? 1 : 0);
+
+            this.ViewBag.Page = page;
 
             var postsForSideBars = db.Posts.Include(p => p.Author)
                 .OrderByDescending(p => p.Date)
                 .Take(5);
             ViewBag.SidebarPosts = postsForSideBars.ToList();
 
-            return View(posts.ToList());
+            return View(posts);
         }
 
     }

@@ -45,7 +45,6 @@
 
 
 <section class="row">
-    
 
         @foreach (var post in Model)
         {
@@ -59,11 +58,40 @@
                         @:by <i>@post.Author.FullName (@post.Author.UserName)</i>
                 }
                 </div>
-                <div>
-                    post.Body
+                <div class="body">
+                    @post.Body
                 </div>
             </article>
-
+       
         }
+
+    <!--Paging view logic-->
+    <div class="col-md-4 col-md-offset-4">
+        @if (ViewBag.Page > 0)
+        {
+            <a href="@Url.Action("Index", new { page = ViewBag.Page - 1 })"
+               class="btn btn-default">
+                &laquo; Prev
+            </a>
+        }
+        @if (ViewBag.Page < ViewBag.MaxPage)
+        {
+            <a href="@Url.Action("Index", new { page = ViewBag.Page + 1 })"
+               class="btn btn-default">
+                Next &raquo;
+            </a>
+        }
+    </div>
+    
 </section>
 
+@section scripts {
+    @Scripts.Render("~/bundles/readmore");
+    @*https://github.com/jedfoster/Readmore.js*@
+    <script>
+        $('article .body').readmore({
+            collapsedHeight: 150,
+            blockCSS: 'display: block; width: 100%;'
+        });
+    </script>
+}
