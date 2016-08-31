@@ -19,8 +19,16 @@ namespace MVCBlog
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            // including readmore
             bundles.Add(new ScriptBundle("~/bundles/readmore").Include(
                        "~/Scripts/jquery.readmore.js"));
+
+            // date time bundles
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker").Include("~/Scripts/moment.js",
+                "~/Scripts/bootstrap-datetimepicker.js"));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap-datetimepicker")
+                .Include("~/Content/bootstrap-datetimepicker.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",

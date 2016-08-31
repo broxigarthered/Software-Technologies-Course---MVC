@@ -23,6 +23,7 @@
 }
 
 .post {
+    border-radius: 20px;
     background: rgb(238, 238, 238) none repeat scroll 0% 0%;
     padding: 25px;
     margin-bottom: 20px;
