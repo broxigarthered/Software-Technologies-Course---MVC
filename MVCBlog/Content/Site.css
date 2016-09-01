@@ -10,6 +10,8 @@
     padding-left: 15px;
     padding-right: 15px;
     padding: 10px;
+    font-size: 15px; 
+    font-family: Sans-serif   
 }
 
 .post>h2, .post>div {

@@ -90,7 +90,7 @@ namespace MVCBlog.Controllers
                 }
 
                 db.Posts.Add(post);
-                this.AddNotification("Post Created.", NotificationType.INFO);
+                this.AddNotification("Post created successfully.", NotificationType.INFO);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -99,6 +99,7 @@ namespace MVCBlog.Controllers
         }
 
         // GET: Posts/Edit/5
+
         //[Authorize(Roles = "Administrators")]
         public ActionResult Edit(int? id)
         {
@@ -117,6 +118,13 @@ namespace MVCBlog.Controllers
             if (post == null)
             {
                 return HttpNotFound();
+            }
+
+            if (user == null)
+            {
+                this.AddNotification("You have to be logged in, in order to edit that post.", NotificationType.INFO);
+
+                return RedirectToAction("Index");
             }
 
             // if the author of the post is the one currently logged or the admin is logged - post editing is enabled
@@ -157,7 +165,7 @@ namespace MVCBlog.Controllers
                 if (ModelState.IsValid)
                 {
                     db.Entry(post).State = EntityState.Modified;
-                    this.AddNotification("Post Edited successfully.", NotificationType.INFO);
+                    this.AddNotification("Post edited successfully.", NotificationType.INFO);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
